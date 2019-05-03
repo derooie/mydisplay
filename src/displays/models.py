@@ -30,7 +30,7 @@ class Display(models.Model):
 
 
 class Line(models.Model):
-    # name = models.ForeignKey(Display, on_delete=models.CASCADE, related_name='lines')
+    display = models.ForeignKey(Display, on_delete=models.CASCADE, related_name='lines')
     line = models.CharField(max_length=16)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, blank=True, null=True)
 
