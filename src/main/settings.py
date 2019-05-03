@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'displays',
     'topics',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
