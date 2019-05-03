@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, FormView, ListView, DetailView, UpdateView
-
+from django.views.generic import TemplateView, FormView, ListView, DetailView, UpdateView, CreateView
+from django.db import transaction
 from accounts.models import Customer
-from accounts.forms import SettingsForm
+from accounts.forms import LineForm, DisplayLineFormSet
 from topics.models import Topic
-from displays.models import MyDisplayModel, Display
+from displays.models import MyDisplayModel, Display, Line
+
+from displays.forms import LineChoiceForm
 
 
 class LoginView(LoginRequiredMixin, TemplateView):
@@ -32,8 +34,6 @@ class SettingsView(LoginRequiredMixin, TemplateView):
     # display = MyDisplayModel.objects.get(pk=1)
     # lines = display.lines.all()
 
-    topics = Topic.objects.all()
-
     def get_context_data(self, **kwargs):
         display = MyDisplayModel.objects.get(display__serial_number=self.kwargs['serial_number'])
         context = {
@@ -49,47 +49,72 @@ class SettingsView(LoginRequiredMixin, TemplateView):
     #     print(lines)
 
 
-class SettingsFormView(LoginRequiredMixin, UpdateView):
+class DisplayList(ListView):
+    model = Display
+
+
+class DisplayCreate(CreateView):
+    model = Display
+    fields = ['model', 'friendly_name']
+
+
+class DisplayLineCreateView(CreateView):
     model = Display
     template_name = 'accounts/settings.html'
-    form_class = SettingsForm
-
-    def get_maxlines(self, customer):
-        print(customer)
-        return {"": ""}
-
-    # def get_context_data(self, **kwargs):
-    #
-    #     lines = []
-    #     display_pk = self.kwargs['pk']
-    #     customer = Customer.objects.get(display__pk=display_pk)
-    #     display = customer.display.get(pk=display_pk)
-    #
-    #     # x = customer.display.get(serial_number=display.serial_number)
-    #     for line in display.lines.all():
-    #         lines.append(line)
-    #     # context = super(SettingsFormView, self).get_context_data(**kwargs)
-    #     # context['customer'] = customer
-    #     # context['display'] = display
-    #     # context['topics'] = Topic.objects.all()
-    #     # context['lines'] = lines
-    #     # context['display_model'] = MyDisplayModel.objects.get(display__pk=self.kwargs['pk'])
-    #     # context['pollo'] = 'pollo'
-    #     # y= customer.display.get()
-    #     # print(y.all())
-    #     return {}
+    fields = ['model','friendly_name']
 
     def get_success_url(self):
-        return '/accounts/settings/{}'.format(self.kwargs.get('pk'))
+        return '/accounts/'
+
+    def get_context_data(self, **kwargs):
+        data = super(DisplayLineCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['lines'] = DisplayLineFormSet(self.request.POST)
+        else:
+            data['lines'] = DisplayLineFormSet()
+        return data
 
     def form_valid(self, form):
-        x=SettingsForm(self.request)
-        print(form.cleaned_data)
-        print('valid')
-        return super().form_valid(form)
+        context = self.get_context_data()
+        lines = context['lines']
+        with transaction.atomic():
+            self.object = form.save()
+            if lines.is_valid():
+                lines.instance = self.object
+                lines.save()
+        return super(DisplayLineCreateView, self).form_valid(form)
 
-    def form_invalid(self, form):
-        print(self.kwargs)
-        # print(self.form)
-        print('invalid')
+    def inform_valid(self, form):
+        print('Invalid')
+        return super().form_invalid(form)
+
+
+class DisplayLineUpdateView(UpdateView):
+    model = Display
+    template_name = 'accounts/settings.html'
+    fields = ['model','friendly_name']
+
+    def get_success_url(self):
+        return '/accounts/'
+
+    def get_context_data(self, **kwargs):
+        data = super(DisplayLineUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['lines'] = DisplayLineFormSet(self.request.POST, instance=self.object)
+        else:
+            data['lines'] = DisplayLineFormSet(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        lines = context['lines']
+        with transaction.atomic():
+            self.object = form.save()
+            if lines.is_valid():
+                lines.instance = self.object
+                lines.save()
+        return super(DisplayLineUpdateView, self).form_valid(form)
+
+    def inform_valid(self, form):
+        print('Invalid')
         return super().form_invalid(form)

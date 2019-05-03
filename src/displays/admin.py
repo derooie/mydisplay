@@ -12,11 +12,11 @@ class LineinLine(admin.StackedInline):
 
 class MyDisplayAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['display_model', ]}),
-        ('Display information', {'fields': ['max_lines']}),
+        (None, {'fields': ['friendly_name', ]}),
+        ('Display information', {'fields': ['serial_number']}),
     ]
-    # inlines = [LineinLine]
+    inlines = [LineinLine]
 
 
-admin.site.register(Display)
-admin.site.register(MyDisplayModel, MyDisplayAdmin)
+# admin.site.register(Display)
+admin.site.register(Display, MyDisplayAdmin)
