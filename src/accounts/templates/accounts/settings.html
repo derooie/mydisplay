@@ -1,10 +1,32 @@
 {% extends 'main/layout.html' %}
 
-
 {% block content %}
-   <form action="" method="post">{% csrf_token %}
-            {{ form.as_p }}
+    <form method="post">
+        {% csrf_token %}
+        <!--Data from the Display model. Only to be used for information, not for modification-->
+        <div class="display-data">
 
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Display model</label>
+                <label class="col-sm-4 col-form-label">{{ display.model }}</label>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Serial number</label>
+                <label class="col-sm-4 col-form-label">{{ display.serial_number }}</label>
+            </div>
+            <!--The first form object. Only used for setting a friendly name.-->
+            {% for field in form %}
+                <div class="form-group row">
+                    <label for="{{ field.name }}" class="col-sm-4 col-form-label">Friendly Name</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="{{ field.name }}" name="{{ field.name }}"
+                               value="{{ field.value }}">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!--The second form with references from Display to the Lines-->
+        <div class="display-lines">
             <table class="table">
                 {{ lines.management_form }}
 
@@ -32,15 +54,17 @@
                             </td>
                         {% endfor %}
                     </tr>
+
+
                 {% endfor %}
             </table>
-            <input type="submit" value="Save"/>
 
+            <button type="submit" class="btn btn-primary mb-2">Save</button>
+        </div>
     </form>
 
-    {#    <form method="post" action="{% url 'display.index' %}">#}
-    {##}
-    {#    </form>#}
-<input type="submit" value="Add a line">
+
+
+    {#<input type="submit" value="Add a line">#}
 
 {% endblock %}

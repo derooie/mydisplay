@@ -55,13 +55,13 @@ class DisplayList(ListView):
 
 class DisplayCreate(CreateView):
     model = Display
-    fields = ['model', 'friendly_name']
+    fields = ['friendly_name']
 
 
 class DisplayLineCreateView(CreateView):
     model = Display
     template_name = 'accounts/settings.html'
-    fields = ['model','friendly_name']
+    fields = ['friendly_name']
 
     def get_success_url(self):
         return '/accounts/'
@@ -76,6 +76,7 @@ class DisplayLineCreateView(CreateView):
 
     def form_valid(self, form):
         context = self.get_context_data()
+
         lines = context['lines']
         with transaction.atomic():
             self.object = form.save()
@@ -92,13 +93,14 @@ class DisplayLineCreateView(CreateView):
 class DisplayLineUpdateView(UpdateView):
     model = Display
     template_name = 'accounts/settings.html'
-    fields = ['model','friendly_name']
+    fields = ['friendly_name', ]
 
     def get_success_url(self):
-        return '/accounts/'
+        return '/accounts/settings/{}'.format(self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         data = super(DisplayLineUpdateView, self).get_context_data(**kwargs)
+        data['display'] = Display.objects.get(pk=self.kwargs['pk'])
         if self.request.POST:
             data['lines'] = DisplayLineFormSet(self.request.POST, instance=self.object)
         else:

@@ -1,5 +1,5 @@
 from django.forms import ModelForm, ModelChoiceField, Form, Select, Textarea, ChoiceField, ModelMultipleChoiceField, \
-    RadioSelect, inlineformset_factory
+    RadioSelect, inlineformset_factory, TextInput
 
 from topics.models import Topic
 from displays.models import Line, MyDisplayModel, Display
@@ -10,13 +10,18 @@ from accounts.models import Customer
 class DisplayForm(ModelForm):
     class Meta:
         model = Display
-        exclude = ('id', 'model' )
+        exclude = ('id', )
 
 
 class LineForm(ModelForm):
     class Meta:
         model = Line
-        exclude = ('id', 'model')
+        exclude = ('id', )
+
+        widgets = {
+            'line': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'topic': Select(attrs={'class': 'form-control'}),
+        }
 
 
 DisplayLineFormSet = inlineformset_factory(Display, Line, form=LineForm, extra=0)
