@@ -22,7 +22,7 @@ class Display(models.Model):
     model = models.ForeignKey(MyDisplayModel, on_delete=models.CASCADE, related_name='model')
     serial_number = models.PositiveSmallIntegerField(unique=True)
     friendly_name = models.CharField(max_length=64, blank=True, null=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer', blank=True, null=True)
 
     def __str__(self):
         return str(self.serial_number)

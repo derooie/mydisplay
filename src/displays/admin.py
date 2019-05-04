@@ -12,11 +12,11 @@ class LineinLine(admin.StackedInline):
 
 class MyDisplayAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['friendly_name', ]}),
-        ('Display information', {'fields': ['serial_number']}),
+        (None, {'fields': ['model', ]}),
+        ('Display information', {'fields': ['serial_number', 'friendly_name', 'customer', ]}),
     ]
     inlines = [LineinLine]
 
 
-# admin.site.register(Display)
+admin.site.register(MyDisplayModel)
 admin.site.register(Display, MyDisplayAdmin)
