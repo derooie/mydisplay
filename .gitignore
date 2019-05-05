@@ -1,6 +1,6 @@
-static/
 venv/
 *.pyc
 .idea
 mydisplay.sqlite3
 params.py
+/static/
