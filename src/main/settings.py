@@ -119,7 +119,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/mydisplay/'
+STATIC_ROOT = REPOSITORY_ROOT + '/static/'
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/accounts/'
