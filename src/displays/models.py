@@ -31,6 +31,7 @@ class Display(models.Model):
 class Line(models.Model):
     display = models.ForeignKey(Display, on_delete=models.CASCADE, related_name='lines')
     line = models.CharField(max_length=16)
+    user_text = models.CharField(max_length=16, null=True, blank=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

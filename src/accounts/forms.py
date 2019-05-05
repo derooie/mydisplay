@@ -20,6 +20,7 @@ class LineForm(ModelForm):
 
         widgets = {
             'line': TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'user_text': TextInput(attrs={'class': 'form-control'}),
             'topic': Select(attrs={'class': 'form-control'}),
         }
 
