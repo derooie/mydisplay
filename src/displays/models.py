@@ -2,7 +2,6 @@ from django.db import models
 
 from topics.models import Topic
 
-
 from accounts.models import Customer
 
 
