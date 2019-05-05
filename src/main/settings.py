@@ -117,7 +117,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/mydisplay/static/'
