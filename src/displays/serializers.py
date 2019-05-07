@@ -1,18 +1,18 @@
 from rest_framework import serializers
 from rest_framework.response import Response
 
-from displays.models import Line
+from displays.models import Line, Display
 
 
 class DisplaySerializer(serializers.Serializer):
     serial_number = serializers.IntegerField()
-    friendly_name = serializers.CharField(max_length=64)
+    display_model = serializers.IntegerField()
 
 
 class Pollo(serializers.Serializer):
-    line = serializers.PrimaryKeyRelatedField(queryset=Line.objects.get(pk=1))
-    topic = serializers.CharField()
-    # user_text = serializers.CharField()
+    class Meta:
+        model = Display
+        fields = ('serial_number')
 
 
 class LineSerializer(serializers.ModelSerializer):
