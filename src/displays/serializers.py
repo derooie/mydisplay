@@ -7,12 +7,7 @@ from displays.models import Line, Display
 class DisplaySerializer(serializers.Serializer):
     serial_number = serializers.IntegerField()
     display_model = serializers.IntegerField()
-
-
-class Pollo(serializers.Serializer):
-    class Meta:
-        model = Display
-        fields = ('serial_number')
+    font_size = serializers.IntegerField()
 
 
 class LineSerializer(serializers.ModelSerializer):

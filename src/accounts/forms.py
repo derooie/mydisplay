@@ -12,6 +12,12 @@ class DisplayForm(ModelForm):
         model = Display
         exclude = ('id', )
 
+        font_size = ChoiceField(label='', choices=('1','2'), widget=Select(attrs={'class': 'regDropDown'}))
+        widgets = {
+            # 'font_size': Select(attrs={'class': 'form-group row form-control'}),
+            'friendly_name': TextInput(attrs={'class': 'form-group row form-control'}),
+        }
+
 
 class LineForm(ModelForm):
     class Meta:

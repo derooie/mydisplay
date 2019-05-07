@@ -4,6 +4,8 @@ from topics.models import Topic
 
 from accounts.models import Customer
 
+FONT_SIZES = ((8, 'Small'), (12, 'Normal'), (15, 'Large'))
+
 
 class MyDisplayModel(models.Model):
     display_model = models.CharField(max_length=64, unique=True)
@@ -22,6 +24,7 @@ class Display(models.Model):
     serial_number = models.PositiveSmallIntegerField(unique=True)
     friendly_name = models.CharField(max_length=64, blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer', blank=True, null=True)
+    font_size = models.PositiveSmallIntegerField(choices=FONT_SIZES, default=12)
 
     def __str__(self):
         return str(self.serial_number)

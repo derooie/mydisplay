@@ -18,14 +18,16 @@ class DisplayDetailAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, serial_number):
-        obj = Line.objects.filter(display__serial_number=serial_number)
-        lines = {}
-        for item in obj:
-            lines[item.line] = {
+        display_obj = Display.objects.get(serial_number=serial_number)
+        line_obj = Line.objects.filter(display__serial_number=serial_number)
+        json = {}
+        json["font_size"]=display_obj.font_size
+        for item in line_obj:
+            json[item.line] = {
                 "topic": item.topic.topic.lower(),
                 "user_text": item.user_text
             }
-        return Response(lines)
+        return Response(json)
 
     def post(self, request):
         serializer = DisplaySerializer(data=request.data)

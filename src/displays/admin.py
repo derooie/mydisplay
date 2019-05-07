@@ -13,7 +13,7 @@ class LineinLine(admin.StackedInline):
 class MyDisplayAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['model', ]}),
-        ('Display information', {'fields': ['serial_number', 'friendly_name', 'customer', ]}),
+        ('Display information', {'fields': ['serial_number', 'friendly_name', 'font_size', 'customer', ]}),
     ]
     inlines = [LineinLine]
 

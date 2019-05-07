@@ -93,7 +93,7 @@ class DisplayLineCreateView(CreateView):
 class DisplayLineUpdateView(UpdateView):
     model = Display
     template_name = 'accounts/settings.html'
-    fields = ['friendly_name', ]
+    fields = ['friendly_name', 'font_size', ]
 
     def get_success_url(self):
         return '/accounts/settings/{}'.format(self.kwargs['pk'])
