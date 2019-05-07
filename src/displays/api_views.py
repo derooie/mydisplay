@@ -1,4 +1,3 @@
-
 from rest_framework.authentication import BasicAuthentication
 
 from rest_framework.permissions import IsAuthenticated
@@ -21,7 +20,7 @@ class DisplayDetailAPIView(APIView):
         display_obj = Display.objects.get(serial_number=serial_number)
         line_obj = Line.objects.filter(display__serial_number=serial_number)
         json = {}
-        json["font_size"]=display_obj.font_size
+        json["display_properties"] = {"font_size": display_obj.font_size}
         for item in line_obj:
             json[item.line] = {
                 "topic": item.topic.topic.lower(),
