@@ -1,6 +1,7 @@
 from rest_framework.authentication import BasicAuthentication
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from displays.permissions import IsOwner
 from rest_framework.response import Response
 
 from django.db import IntegrityError
@@ -11,15 +12,17 @@ from displays.serializers import DisplaySerializer
 
 app_name = 'displays'
 
+from displays.models import Display
+
 
 class DisplayDetailAPIView(APIView):
     authentication_classes = (BasicAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsAdminUser,)
 
     def get(self, request, serial_number):
         display_obj = Display.objects.get(serial_number=serial_number)
         line_obj = Line.objects.filter(display__serial_number=serial_number)
-        json = {}
+        json = dict()
         json["display_properties"] = {"font_size": display_obj.font_size}
         for item in line_obj:
             json[item.line] = {

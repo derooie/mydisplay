@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, FormView, ListView, DetailView, UpdateView, CreateView
 from django.db import transaction
@@ -115,8 +116,10 @@ class DisplayLineUpdateView(UpdateView):
             if lines.is_valid():
                 lines.instance = self.object
                 lines.save()
+        messages.success(self.request, 'Uw aanpassingen zijn opgeslagen')
         return super(DisplayLineUpdateView, self).form_valid(form)
 
     def inform_valid(self, form):
         print('Invalid')
+        messages.error(self.request, 'Uw aanpassingen zijn niet opgeslagen')
         return super().form_invalid(form)
