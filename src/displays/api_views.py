@@ -17,7 +17,7 @@ from displays.models import Display
 
 class DisplayDetailAPIView(APIView):
     authentication_classes = (BasicAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    # permission_classes = (IsAuthenticated, IsAdminUser,)
 
     def get(self, request, serial_number):
         display_obj = Display.objects.get(serial_number=serial_number)
