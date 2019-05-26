@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.views.generic import TemplateView, FormView, ListView, DetailView, UpdateView, CreateView
 from django.db import transaction
 from accounts.models import Customer
@@ -8,6 +9,8 @@ from topics.models import Topic
 from displays.models import MyDisplayModel, Display, Line
 
 from displays.forms import LineChoiceForm
+
+from main.context_processors import check_displays
 
 
 class LoginView(LoginRequiredMixin, TemplateView):
@@ -91,7 +94,7 @@ class DisplayLineCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class DisplayLineUpdateView(UpdateView):
+class DisplayLineUpdateView(LoginRequiredMixin, UpdateView):
     model = Display
     template_name = 'accounts/settings.html'
     fields = ['friendly_name', 'font_size', ]
@@ -100,8 +103,15 @@ class DisplayLineUpdateView(UpdateView):
         return '/accounts/settings/{}'.format(self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
+        display = Display.objects.get(pk=self.kwargs['pk'])
+
+        # Check if user is permitted to see and update the values of the display
+        if display.serial_number not in check_displays(self.request)['displays']:
+            raise PermissionDenied
+
         data = super(DisplayLineUpdateView, self).get_context_data(**kwargs)
-        data['display'] = Display.objects.get(pk=self.kwargs['pk'])
+        data['display'] = display
+
         if self.request.POST:
             data['lines'] = DisplayLineFormSet(self.request.POST, instance=self.object)
         else:

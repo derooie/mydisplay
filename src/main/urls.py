@@ -8,3 +8,4 @@ urlpatterns = [
     path('api/', include('displays.api_urls')),
     path('', include('accounts.urls', namespace='accounts')),
 ]
+
