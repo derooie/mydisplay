@@ -89,8 +89,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mydisplay',
         'USER': 'mydisplay',
-        'PASSWORD': 'mydisplay@secret19',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'mydisplay',
+        'HOST': 'http://mydisplay-web-mydisplay.192.168.1.250.xip.io',
         'PORT': '5432',
     }
 }

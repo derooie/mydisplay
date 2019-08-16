@@ -22,12 +22,10 @@ class DisplayListView(LoginRequiredMixin, ListView):
 
     template_name = 'accounts/index.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data
-    #     return context
-
     def get_queryset(self):
-        return self.model.objects.filter(customer=self.request.user.customer)
+        return  self.model.objects.filter(customer=self.request.user.customer)
+        # return context
+
 
 
 class SettingsView(LoginRequiredMixin, TemplateView):

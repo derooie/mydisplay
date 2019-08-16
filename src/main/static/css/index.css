@@ -1,4 +1,4 @@
-.display-data{
+.display-data {
     background-color: #25aaff;
     padding: 20px;
     font-size: 18px;
@@ -6,14 +6,33 @@
     margin-bottom: 50px;
 }
 
-.display-lines{
+.display-lines {
     background-color: #8cff01;
 }
 
-body{
+body {
     background-color: #fffdf4;
 }
 
-tr td:hover{
+tr td:hover {
     cursor: pointer;
+}
+
+.login-box {
+display: inline-block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    border-radius: 10px;
+    width: 350px;
+    height: 300px;
+    background-color: #b0beff;
+    margin: auto;
+}
+
+.navbar{
+    margin-bottom: 30px;
 }
