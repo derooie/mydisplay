@@ -1,4 +1,4 @@
-# Change to test git hook-2
+# Change to test git hook
 
 
 import os
